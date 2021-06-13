@@ -16,8 +16,7 @@
     "url": "git+https://github.com/julody/elemars.git"
   },
   "author": "Anzhela Bolshakova <bolshakova.anzhe@gmail.com>",
-  "license": "MIT",
-  "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
+  "license": "UNLICENSED",
   "homepage": "https://elemars.netlify.app/",
   "devDependencies": {
     "@babel/core": "^7.9.0",
