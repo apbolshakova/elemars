@@ -1,5 +1,6 @@
 import {Coordinates} from './coordinates';
 
 export interface GameEntity {
-    coordinates: Coordinates;
+    position: Coordinates;
+    speed: Coordinates;
 }

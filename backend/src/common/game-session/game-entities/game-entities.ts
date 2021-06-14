@@ -1,7 +1,7 @@
 import {CharacterEntity} from './character-entity/character-entity';
-import {MapEntity} from './map-entity/map-entity';
+import {MapEntities} from './map-entities/map-entities';
 
 export interface GameEntities {
     characterEntities: CharacterEntity[];
-    mapEntities: MapEntity[];
+    mapEntities: MapEntities;
 }

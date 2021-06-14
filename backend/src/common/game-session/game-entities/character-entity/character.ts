@@ -1,4 +1,4 @@
-export enum MapEntityType {
+export enum Character {
     FIRE = 'fire',
     ICE = 'ice',
     WATER = 'water',

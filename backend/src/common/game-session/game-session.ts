@@ -9,5 +9,6 @@ export interface GameSession {
     mode: GameMode;
     gameHost: Player;
     joinedPlayers: Player[];
+    globalX?: number; // Значение, на основе которого проверяется необходимость рендера новых элементов карты
     gameObjects?: GameEntities;
 }
