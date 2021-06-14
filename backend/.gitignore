@@ -32,3 +32,6 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# TODO удалить после написания рабочего минимума
+/src/old-game/

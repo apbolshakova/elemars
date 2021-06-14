@@ -1,6 +1,6 @@
 import {Injectable} from '@nestjs/common';
 
-@Injectable()
+@Injectable() // TODO удалить
 export class AppService {
     getHello(): string {
         return 'Hello World!';
