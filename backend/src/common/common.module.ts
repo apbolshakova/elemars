@@ -5,4 +5,4 @@ import {Module} from '@nestjs/common';
     controllers: [],
     providers: [],
 })
-export class CommonModule {}
+export class CommonModule {} // TODO удалить если не будет нужен

@@ -6,4 +6,4 @@ import {CommonModule} from '../common/common.module';
     controllers: [],
     providers: [],
 })
-export class GameModule {}
+export class GameLogicModule {}
