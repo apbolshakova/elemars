@@ -1,4 +1,4 @@
-import {Controller} from '@nestjs/common';
+import {WebSocketGateway} from '@nestjs/websockets';
 
-@Controller('game')
+@WebSocketGateway(80, {namespace: 'game'})
 export class GameGateway {}

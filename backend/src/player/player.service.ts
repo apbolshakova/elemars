@@ -35,4 +35,19 @@ export class PlayerService {
 
         this.deletePlayer(socketId);
     }
+
+    public getPlayersByStatus(status: PlayerStatus): Player[] {
+        const filteredPlayers: Player[] = [];
+
+        for (const socketId in this.players) {
+            if (
+                this.players.hasOwnProperty(socketId) &&
+                this.players[socketId].status === status
+            ) {
+                filteredPlayers.push(this.players[socketId]);
+            }
+        }
+
+        return filteredPlayers;
+    }
 }

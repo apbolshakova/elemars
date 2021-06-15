@@ -9,12 +9,13 @@ export class PlayerGateway {
     @SubscribeMessage('connect')
     handleConnection(client: Socket) {
         this.playerService.registerNewPlayer(client);
-        if (this.playerService.isPlayerExist(client.id)) {
-            client.emit('connectSuccess'); // TODO отправлять информацию о созданных играх
+
+        if (!this.playerService.isPlayerExist(client.id)) {
+            client.emit('connectFail', Error('Не удалось сохранить игрока в системе.'));
             return;
         }
 
-        client.emit('connectFail', Error('Не удалось сохранить игрока в системе.'));
+        client.emit('connectSuccess'); // TODO отправить новому игрокуы информацию об уже созданных играх
     }
 
     @SubscribeMessage('disconnect')

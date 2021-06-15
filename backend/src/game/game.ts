@@ -4,7 +4,7 @@ import {Player} from '../player/player';
 import {GameEntities} from './game-entities/game-entities';
 
 export interface Game {
-    id: string;
+    title: string;
     status: GameStatus;
     mode: GameMode;
     gameHost: Player;
