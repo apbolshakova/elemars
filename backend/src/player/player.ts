@@ -5,5 +5,5 @@ import {PlayerStatus} from './player-status';
 export interface Player {
     socket: Socket;
     status: PlayerStatus;
-    pressedKeys: Key[];
+    pressedKeys?: Key[];
 }
