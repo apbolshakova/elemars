@@ -15,7 +15,7 @@ export class PlayerGateway {
             return;
         }
 
-        client.emit('connectSuccess'); // TODO отправить новому игрокуы информацию об уже созданных играх
+        client.emit('connectSuccess'); // TODO отправить новому игроку информацию об уже созданных играх
     }
 
     @SubscribeMessage('disconnect')

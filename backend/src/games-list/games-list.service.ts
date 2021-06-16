@@ -38,10 +38,16 @@ export class GamesListService {
         return !!this.getGame(gameId);
     }
 
-    public addPlayerToGame(gameId: string, player: Player, character: Character): void {
+    public addPlayerToGame(game: Game, player: Player, character: Character): void {
         player.status = PlayerStatus.IN_LOBBY;
         player.character = character;
 
-        this.getGame(gameId).joinedPlayers.push(player);
+        game.joinedPlayers.push(player);
+    }
+
+    public isCharacterAvailable(game: Game, character: Character): boolean {
+        return !!game.joinedPlayers.find(
+            (player: Player) => player.character === character,
+        );
     }
 }

@@ -7,6 +7,8 @@ import {generateId} from './id-generation';
 import {PlayerService} from '../player/player.service';
 import {Player} from '../player/player';
 import {PlayerStatus} from '../player/player-status';
+import {Game} from '../game/game';
+import {GameStatus} from '../game/game-status';
 
 @WebSocketGateway(80, {namespace: 'games-list'})
 export class GamesListGateway {
@@ -39,7 +41,7 @@ export class GamesListGateway {
         }
 
         this.gamesListService.addPlayerToGame(
-            newGameId,
+            this.gamesListService.getGame(newGameId),
             hostPlayer,
             createGameDto.character,
         );
@@ -57,8 +59,59 @@ export class GamesListGateway {
             gameId: newGameId,
         });
 
+        this.emitGameListUpdate();
+    }
+
+    @SubscribeMessage('joinGame')
+    handleGameJoining(
+        client: Socket,
+        joinGameDto: {
+            gameId: string;
+            character: Character;
+        },
+    ) {
+        if (!!this.playerService.isPlayerExist(client.id)) {
+            client.emit(
+                'joinFail',
+                Error('Не удалось найти подключающегося игрока в системе.'),
+            );
+        }
+
+        const player: Player = this.playerService.getPlayer(client.id);
+
+        if (!!this.gamesListService.isGameExist(joinGameDto.gameId)) {
+            client.emit('joinFail', Error('Попытка подключение к несуществующей игре.'));
+        }
+
+        const game: Game = this.gamesListService.getGame(joinGameDto.gameId);
+
+        if (game.status !== GameStatus.IN_LOBBY) {
+            client.emit('joinFail', Error('Попытка подключения к начатой игре.'));
+        }
+
+        if (!this.gamesListService.isCharacterAvailable(game, joinGameDto.character)) {
+            client.emit('joinFail', Error('Попытка выбрать занятого персонажа.'));
+        }
+
+        this.gamesListService.addPlayerToGame(game, player, joinGameDto.character);
+
+        if (player.status !== PlayerStatus.IN_LOBBY) {
+            client.emit('joinFail', Error('Не удалось изменить статус игрока.'));
+        }
+
+        client.emit('joinSuccess');
+
+        this.emitGameListUpdate();
+        this.emitGameLobbyUpdate();
+    }
+
+    private emitGameListUpdate() {
         this.playerService
             .getPlayersByStatus(PlayerStatus.IN_MAIN_MENU)
             .map((player: Player) => player.socket.emit('updateGamesList')); // TODO прокидывать информацию обо всех играх в главном меню
+    }
+
+    private emitGameLobbyUpdate() {
+        // TODO прокидывать на всех игроков подключенных к данной игре информацию о них
     }
 }
