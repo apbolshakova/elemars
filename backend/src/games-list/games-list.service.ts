@@ -5,11 +5,13 @@ import {Game} from '../game/game';
 import {GameMode} from '../game/game-mode';
 import {GameStatus} from '../game/game-status';
 import {Character} from '../game/game-entities/character-entity/character';
-import {CharacterEntity} from '../game/game-entities/character-entity/character-entity';
+import {GameService} from '../game/game.service';
 
 @Injectable()
 export class GamesListService {
     private games: Record<string, Game>;
+
+    constructor(private gameService: GameService) {}
 
     public createNewGame(
         gameId: string,
@@ -32,6 +34,19 @@ export class GamesListService {
 
     public getGame(gameId: string): Game | undefined {
         return this.games[gameId];
+    }
+
+    public getGameIdByPlayer(player: Player): string | undefined {
+        for (const gameId in this.games) {
+            if (
+                this.games.hasOwnProperty(gameId) &&
+                this.games[gameId].joinedPlayers.includes(player)
+            ) {
+                return gameId;
+            }
+        }
+
+        return undefined;
     }
 
     public isGameExist(gameId: string): boolean {
@@ -61,7 +76,7 @@ export class GamesListService {
 
         if (game.joinedPlayers.length) {
             game.gameHost = game.joinedPlayers[0];
-            this.deleteCharacterEntity(game, playerToDelete.socket.id);
+            this.gameService.deleteCharacterEntity(game, playerToDelete.socket.id);
         } else {
             this.deleteGame(gameId);
         }
@@ -70,13 +85,6 @@ export class GamesListService {
     public isCharacterAvailable(game: Game, character: Character): boolean {
         return !!game.joinedPlayers.find(
             (player: Player) => player.character === character,
-        );
-    }
-
-    // TODO возможно вынести в сервис игры
-    private deleteCharacterEntity(game: Game, socketId: string): void {
-        game.gameEntities.characterEntities = game.gameEntities.characterEntities.filter(
-            (characterEntity: CharacterEntity) => characterEntity.socketId !== socketId,
         );
     }
 }

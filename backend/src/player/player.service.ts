@@ -26,16 +26,6 @@ export class PlayerService {
         return !!this.getPlayer(socketId);
     }
 
-    public disconnectPlayer(socketId: string): void {
-        const player: Player | undefined = this.getPlayer(socketId);
-
-        if (player?.status !== PlayerStatus.IN_MAIN_MENU) {
-            // TODO удалять игрока из текущей игры
-        }
-
-        this.deletePlayer(socketId);
-    }
-
     public getPlayersByStatus(status: PlayerStatus): Player[] {
         const filteredPlayers: Player[] = [];
 
