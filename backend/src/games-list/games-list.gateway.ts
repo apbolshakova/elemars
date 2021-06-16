@@ -25,7 +25,7 @@ export class GamesListGateway {
             mode: GameMode;
             character: Character;
         },
-    ) {
+    ): void {
         const newGameId: string = generateId();
         const hostPlayer: Player = this.playerService.getPlayer(client.id);
 
@@ -69,7 +69,7 @@ export class GamesListGateway {
             gameId: string;
             character: Character;
         },
-    ) {
+    ): void {
         if (!!this.playerService.isPlayerExist(client.id)) {
             client.emit(
                 'joinFail',
@@ -102,7 +102,37 @@ export class GamesListGateway {
         client.emit('joinSuccess');
 
         this.emitGameListUpdate();
-        this.emitGameLobbyUpdate();
+        this.emitGamePlayersUpdate();
+    }
+
+    @SubscribeMessage('leaveGame')
+    handleGameLeaving(
+        client: Socket,
+        leaveGameDto: {
+            gameId: string;
+        },
+    ): void {
+        if (!!this.playerService.isPlayerExist(client.id)) {
+            return;
+        }
+
+        const player: Player = this.playerService.getPlayer(client.id);
+
+        this.gamesListService.deletePlayerFromGame(leaveGameDto.gameId, player);
+
+        client.emit('leaveSuccess');
+
+        if (!!this.gamesListService.isGameExist(leaveGameDto.gameId)) {
+            return;
+        }
+
+        const game: Game = this.gamesListService.getGame(leaveGameDto.gameId);
+
+        if (game.status === GameStatus.IN_LOBBY) {
+            this.emitGameListUpdate();
+        }
+
+        this.emitGamePlayersUpdate();
     }
 
     private emitGameListUpdate() {
@@ -111,7 +141,7 @@ export class GamesListGateway {
             .map((player: Player) => player.socket.emit('updateGamesList')); // TODO прокидывать информацию обо всех играх в главном меню
     }
 
-    private emitGameLobbyUpdate() {
+    private emitGamePlayersUpdate() {
         // TODO прокидывать на всех игроков подключенных к данной игре информацию о них
     }
 }

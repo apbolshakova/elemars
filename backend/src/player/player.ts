@@ -7,5 +7,6 @@ export interface Player {
     socket: Socket;
     status: PlayerStatus;
     character?: Character;
+    score?: number;
     pressedKeys?: Key[];
 }
