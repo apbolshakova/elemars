@@ -5,6 +5,7 @@ import {GamesListService} from './games-list/games-list.service';
 import {GamesListGateway} from './games-list/games-list.gateway';
 import {GameService} from './game/game.service';
 import {GameGateway} from './game/game.gateway';
+import {DtoService} from './games-list/dto/dto.service';
 
 @Module({
     imports: [],
@@ -15,6 +16,7 @@ import {GameGateway} from './game/game.gateway';
         GamesListGateway,
         GameService,
         GameGateway,
+        DtoService,
     ],
 })
 export class AppModule {}

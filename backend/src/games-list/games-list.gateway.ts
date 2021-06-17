@@ -9,6 +9,8 @@ import {Player} from '../player/player';
 import {PlayerStatus} from '../player/player-status';
 import {Game} from '../game/game';
 import {GameStatus} from '../game/game-status';
+import {GamesListDto} from './dto/games-list.dto';
+import {GameLobbyDto} from './dto/game-lobby.dto';
 
 @WebSocketGateway(80, {namespace: 'games-list'})
 export class GamesListGateway {
@@ -102,7 +104,7 @@ export class GamesListGateway {
         client.emit('joinSuccess');
 
         this.emitGameListUpdate();
-        this.emitGamePlayersUpdate();
+        this.emitGameLobbyUpdate(game);
     }
 
     @SubscribeMessage('leaveGame')
@@ -130,18 +132,24 @@ export class GamesListGateway {
 
         if (game.status === GameStatus.IN_LOBBY) {
             this.emitGameListUpdate();
+        } else {
+            this.emitGameLobbyUpdate(game);
         }
-
-        this.emitGamePlayersUpdate();
     }
 
     private emitGameListUpdate() {
+        const gamesListDto: GamesListDto = this.gamesListService.getGamesListDto();
+
         this.playerService
             .getPlayersByStatus(PlayerStatus.IN_MAIN_MENU)
-            .map((player: Player) => player.socket.emit('updateGamesList')); // TODO прокидывать информацию обо всех играх в главном меню
+            .map((player: Player) => player.socket.emit('updateGamesList', gamesListDto));
     }
 
-    private emitGamePlayersUpdate() {
-        // TODO прокидывать на всех игроков подключенных к данной игре информацию о них
+    private emitGameLobbyUpdate(game: Game) {
+        const gameLobbyDto: GameLobbyDto = this.gamesListService.getGameLobbyDto(game);
+
+        game.joinedPlayers.map((player: Player) =>
+            player.socket.emit('updateGameLobby', gameLobbyDto),
+        );
     }
 }

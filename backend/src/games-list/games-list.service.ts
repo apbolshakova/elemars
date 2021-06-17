@@ -6,12 +6,15 @@ import {GameMode} from '../game/game-mode';
 import {GameStatus} from '../game/game-status';
 import {Character} from '../game/game-entities/character-entity/character';
 import {GameService} from '../game/game.service';
+import {GamesListDto} from './dto/games-list.dto';
+import {DtoService} from './dto/dto.service';
+import {GameLobbyDto} from './dto/game-lobby.dto';
 
 @Injectable()
 export class GamesListService {
     private games: Record<string, Game>;
 
-    constructor(private gameService: GameService) {}
+    constructor(private gameService: GameService, private dtoService: DtoService) {}
 
     public createNewGame(
         gameId: string,
@@ -86,5 +89,13 @@ export class GamesListService {
         return !!game.joinedPlayers.find(
             (player: Player) => player.character === character,
         );
+    }
+
+    public getGamesListDto(): GamesListDto {
+        return this.dtoService.mapGamesListToDto(this.games);
+    }
+
+    public getGameLobbyDto(game: Game): GameLobbyDto {
+        return this.dtoService.mapPlayersToGameLobbyDto(game.joinedPlayers);
     }
 }
