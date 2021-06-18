@@ -15,7 +15,7 @@ export class CommonScene extends Phaser.Scene {
         this.gameScale = this.gameWidth / 2400;
         this.globalX = this.gameWidth;
         this.rightOutsideRect = new Phaser.Geom.Rectangle(
-            this.gameWidth,
+            this.gameWidth, // TODO решить проблему "внезапно рендерищихся" облаков
             0,
             this.gameWidth,
             this.gameHeight,

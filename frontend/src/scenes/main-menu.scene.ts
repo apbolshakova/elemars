@@ -7,16 +7,13 @@ const CLOUDS_PER_SCREEN = 4;
 const CLOUDS_SPEED = -5;
 
 export default class MainMenuScene extends CommonScene {
-    private backgroundService: BackgroundService;
-    private cloudsService: CloudsService;
+    private backgroundService?: BackgroundService;
+    private cloudsService?: CloudsService;
 
     constructor() {
         super({
             key: 'MainMenuScene',
         });
-
-        this.backgroundService = new BackgroundService(this);
-        this.cloudsService = new CloudsService(this, CLOUDS_PER_SCREEN, CLOUDS_SPEED);
     }
 
     preload(): void {
@@ -30,11 +27,14 @@ export default class MainMenuScene extends CommonScene {
     create(): void {
         this.initScene();
 
+        this.backgroundService = new BackgroundService(this);
+        this.cloudsService = new CloudsService(this, CLOUDS_PER_SCREEN, CLOUDS_SPEED);
+
         this.backgroundService.initBackground();
         this.cloudsService.initClouds();
     }
 
     update(): void {
-        this.cloudsService.updateClouds();
+        this.cloudsService?.updateClouds();
     }
 }

@@ -4,6 +4,7 @@ import {CommonScene} from '../common.scene';
 export class CloudsService {
     private clouds?: Phaser.GameObjects.Group;
     private controlX = this.scene.gameWidth;
+    private isFirstScreen = true;
 
     constructor(
         private scene: CommonScene,
@@ -14,8 +15,9 @@ export class CloudsService {
     public initClouds(): void {
         this.clouds = this.scene.add.group();
         this.clouds.setOrigin(0, 0.5);
+        this.clouds.scaleXY(this.scene.gameScale);
 
-        for (let i = 0; i <= this.cloudsPerScreen; i++) {
+        for (let i = 0; i < this.cloudsPerScreen; i++) {
             this.createAndAddNewCloud();
         }
     }
@@ -26,6 +28,14 @@ export class CloudsService {
         }
 
         const cloudElements = this.clouds.getChildren();
+
+        if (this.isFirstScreen && this.controlX < 0) {
+            // TODO здесь дублируется код с инициализацией - подумать, куда вынести и нужно ли
+            for (let i = 0; i < this.cloudsPerScreen; i++) {
+                this.createAndAddNewCloud();
+            }
+            this.isFirstScreen = false;
+        }
 
         if (this.controlX < 0) {
             this.renewClouds();
