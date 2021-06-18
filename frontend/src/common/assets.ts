@@ -19,4 +19,11 @@ export class Assets {
             numOfVariants: 4,
         };
     }
+    static platform(i?: number): Asset {
+        return {
+            key: 'platform' + i,
+            path: 'src/assets/img/map/platforms/platform' + i + '.png',
+            numOfVariants: 2,
+        };
+    }
 }

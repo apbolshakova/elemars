@@ -8,14 +8,13 @@ export class CloudsService {
 
     constructor(
         private scene: CommonScene,
+        private depth: number,
         private cloudsPerScreen: number,
         private cloudsSpeed: number,
     ) {}
 
     public initClouds(): void {
         this.clouds = this.scene.add.group();
-        this.clouds.setOrigin(0, 0.5);
-        this.clouds.scaleXY(this.scene.gameScale);
 
         for (let i = 0; i < this.cloudsPerScreen; i++) {
             this.createAndAddNewCloud();
@@ -66,6 +65,16 @@ export class CloudsService {
         const point: Phaser.Geom.Point = this.scene.rightOutsideRect.getRandomPoint();
         const cloudType: number = Phaser.Math.Between(1, Assets.cloud().numOfVariants);
 
-        this.clouds?.create(point.x, point.y, Assets.cloud(cloudType).key);
+        const cloud: Phaser.GameObjects.Sprite = this.scene.make.sprite({
+            x: point.x,
+            y: point.y,
+            key: Assets.cloud(cloudType).key,
+            depth: this.depth,
+            origin: {x: 0, y: 0.5},
+            scale: this.scene.gameScale,
+            add: true,
+        });
+
+        this.clouds?.add(cloud);
     }
 }
