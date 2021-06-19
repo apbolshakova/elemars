@@ -1,29 +1,26 @@
-export interface Asset {
-    key: string;
-    path: string;
-    numOfVariants: number;
-}
+import {PlatformType} from '../../platforms/platform-type';
+import {MapAsset} from './map-asset';
 
-export class Assets {
-    static get background(): Asset {
+export class MapAssets {
+    static get background(): MapAsset {
         return {
             key: 'background',
             path: 'src/assets/img/map/background.jpg',
-            numOfVariants: 1,
+            numOfTypes: 1,
         };
     }
-    static cloud(i?: number): Asset {
+    static cloud(i?: number): MapAsset {
         return {
             key: 'cloud' + i,
             path: 'src/assets/img/map/clouds/cloud' + i + '.png',
-            numOfVariants: 4,
+            numOfTypes: 4,
         };
     }
-    static platform(i?: number): Asset {
+    static platform(i?: number): MapAsset {
         return {
             key: 'platform' + i,
             path: 'src/assets/img/map/platforms/platform' + i + '.png',
-            numOfVariants: 2,
+            numOfTypes: Object.keys(PlatformType).length / 2,
         };
     }
 }

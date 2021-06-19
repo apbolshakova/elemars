@@ -1,4 +1,4 @@
-import {Assets} from '../assets';
+import {MapAssets} from '../assets/map-assets/map-assets';
 import {CommonScene} from '../common.scene';
 
 export class CloudsService {
@@ -17,7 +17,7 @@ export class CloudsService {
         this.clouds = this.scene.add.group();
 
         for (let i = 0; i < this.cloudsPerScreen; i++) {
-            this.createAndAddNewCloud();
+            this.createAndAddCloud();
         }
     }
 
@@ -31,7 +31,7 @@ export class CloudsService {
         if (this.isFirstScreen && this.controlX < 0) {
             // TODO здесь дублируется код с инициализацией - подумать, куда вынести и нужно ли
             for (let i = 0; i < this.cloudsPerScreen; i++) {
-                this.createAndAddNewCloud();
+                this.createAndAddCloud();
             }
             this.isFirstScreen = false;
         }
@@ -56,19 +56,19 @@ export class CloudsService {
 
             if (cloudSprite.x + cloudSprite.width < 0) {
                 this.clouds?.remove(cloudSprite);
-                this.createAndAddNewCloud();
+                this.createAndAddCloud();
             }
         });
     }
 
-    private createAndAddNewCloud() {
+    private createAndAddCloud() {
         const point: Phaser.Geom.Point = this.scene.rightOutsideRect.getRandomPoint();
-        const cloudType: number = Phaser.Math.Between(1, Assets.cloud().numOfVariants);
+        const cloudType: number = Phaser.Math.Between(1, MapAssets.cloud().numOfTypes);
 
         const cloud: Phaser.GameObjects.Sprite = this.scene.make.sprite({
             x: point.x,
             y: point.y,
-            key: Assets.cloud(cloudType).key,
+            key: MapAssets.cloud(cloudType).key,
             depth: this.depth,
             origin: {x: 0, y: 0.5},
             scale: this.scene.gameScale,
