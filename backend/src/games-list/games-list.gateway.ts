@@ -12,7 +12,7 @@ import {GameStatus} from '../game/game-status';
 import {GamesListDto} from './dto/games-list.dto';
 import {GameLobbyDto} from './dto/game-lobby.dto';
 
-@WebSocketGateway(80, {namespace: 'games-list'})
+@WebSocketGateway()
 export class GamesListGateway {
     constructor(
         private gamesListService: GamesListService,

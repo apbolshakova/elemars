@@ -5,9 +5,12 @@ import {PlayerStatus} from './player-status';
 
 @Injectable()
 export class PlayerService {
-    private players: Record<string, Player>;
+    private players?: Record<string, Player>;
 
     public registerNewPlayer(socket: Socket): void {
+        if (!this.players) {
+            this.players = {} as Record<string, Player>;
+        }
         this.players[socket.id] = {
             socket,
             status: PlayerStatus.IN_MAIN_MENU,

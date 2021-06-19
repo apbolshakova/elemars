@@ -7,6 +7,7 @@ import {ElemarsService} from './elemars/elemars.service';
 import {CharactersAssets} from '../../common/assets/characters-assets/characters-assets';
 import {UserInterfaceService} from './user-interface/user-interface.service';
 import WebFontFile from '../../common/web-font-file';
+import {SocketService} from '../../common/socket.service';
 
 const CLOUDS_PER_SCREEN = 4;
 const CLOUDS_SPEED = -5;
@@ -22,6 +23,7 @@ enum ObjectDepth {
 }
 
 export default class MainMenuScene extends CommonScene {
+    private socketService?: SocketService;
     private backgroundService?: BackgroundService;
     private cloudsService?: CloudsService;
     private platformsService?: PlatformsService;
@@ -79,6 +81,7 @@ export default class MainMenuScene extends CommonScene {
     create(): void {
         this.initScene();
 
+        this.socketService = new SocketService();
         this.backgroundService = new BackgroundService(this, ObjectDepth.BACKGROUND);
         this.cloudsService = new CloudsService(
             this,

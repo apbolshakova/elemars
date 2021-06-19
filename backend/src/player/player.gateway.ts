@@ -1,4 +1,8 @@
-import {SubscribeMessage, WebSocketGateway} from '@nestjs/websockets';
+import {
+    OnGatewayConnection,
+    OnGatewayDisconnect,
+    WebSocketGateway,
+} from '@nestjs/websockets';
 import {PlayerService} from './player.service';
 import {Socket} from 'socket.io';
 import {PlayerStatus} from './player-status';
@@ -6,15 +10,16 @@ import {Player} from './player';
 import {GamesListGateway} from '../games-list/games-list.gateway';
 import {GamesListService} from '../games-list/games-list.service';
 
-@WebSocketGateway(80, {namespace: 'player'})
-export class PlayerGateway {
+@WebSocketGateway()
+export class PlayerGateway implements OnGatewayConnection, OnGatewayDisconnect {
+    // private readonly logger = new Logger('Player gateway'); TODO удалить
+
     constructor(
         private playerService: PlayerService,
         private gamesListService: GamesListService,
         private gamesListGateway: GamesListGateway,
     ) {}
 
-    @SubscribeMessage('connect')
     handleConnection(client: Socket) {
         this.playerService.registerNewPlayer(client);
 
@@ -26,8 +31,7 @@ export class PlayerGateway {
         client.emit('connectSuccess', this.gamesListService.getGamesListDto());
     }
 
-    @SubscribeMessage('disconnect')
-    handleDisconnection(client: Socket): void {
+    handleDisconnect(client: Socket): void {
         if (!this.playerService.isPlayerExist(client.id)) {
             return;
         }
