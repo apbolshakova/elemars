@@ -26,6 +26,7 @@
     "@babel/preset-typescript": "^7.9.0",
     "@types/express": "^4.17.4",
     "@types/node": "^13.13.2",
+    "@types/webfontloader": "^1.6.32",
     "@typescript-eslint/eslint-plugin": "^2.29.0",
     "@typescript-eslint/parser": "^2.29.0",
     "babel-loader": "^8.1.0",
@@ -50,7 +51,9 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "phaser3-rex-plugins": "^1.1.53",
+    "webfontloader": "^1.6.28"
   },
   "bugs": {
     "url": "https://github.com/julody/elemars/issues"

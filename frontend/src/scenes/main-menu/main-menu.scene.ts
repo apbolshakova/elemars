@@ -5,9 +5,11 @@ import {CloudsService} from '../../common/clouds/clouds.service';
 import {PlatformsService} from './platforms/platforms.service';
 import {ElemarsService} from './elemars/elemars.service';
 import {CharactersAssets} from '../../common/assets/characters-assets/characters-assets';
+import {UserInterfaceService} from './user-interface/user-interface.service';
+import WebFontFile from '../../common/web-font-file';
 
 const CLOUDS_PER_SCREEN = 4;
-const CLOUDS_SPEED = -1;
+const CLOUDS_SPEED = -5;
 
 const CHARACTER_SPRITE_SIZE = 500;
 
@@ -15,8 +17,8 @@ enum ObjectDepth {
     BACKGROUND = 1,
     CLOUDS = 2,
     PLATFORMS = 3,
-    ELEMARS,
-    // USER_INTERFACE,
+    ELEMARS = 4,
+    USER_INTERFACE = 5,
 }
 
 export default class MainMenuScene extends CommonScene {
@@ -24,6 +26,9 @@ export default class MainMenuScene extends CommonScene {
     private cloudsService?: CloudsService;
     private platformsService?: PlatformsService;
     private elemarsService?: ElemarsService;
+    private userInterfaceService?: UserInterfaceService;
+
+    public rexUI: any;
 
     constructor() {
         super({
@@ -32,6 +37,16 @@ export default class MainMenuScene extends CommonScene {
     }
 
     preload(): void {
+        this.load.scenePlugin(
+            // TODO отвязаться от подкачки со стороны
+            'rexuiplugin',
+            'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
+            'rexUI',
+            'rexUI',
+        );
+
+        this.load.addFile(new WebFontFile(this.load, 'Inter'));
+
         this.load.image(MapAssets.background.key, MapAssets.background.path);
 
         for (let i = 1; i <= MapAssets.cloud().numOfTypes; i++) {
@@ -73,20 +88,10 @@ export default class MainMenuScene extends CommonScene {
         );
         this.platformsService = new PlatformsService(this, ObjectDepth.PLATFORMS);
         this.elemarsService = new ElemarsService(this, ObjectDepth.ELEMARS);
-        // this.userInterfaceService = new UserInterfaceService(
-        //     this,
-        //     ObjectDepth.USER_INTERFACE,
-        // );
-
-        this.backgroundService.initBackground();
-        this.cloudsService.initClouds();
-        this.platformsService.initPlatforms();
-        this.elemarsService.initElemars();
-        // this.userInterfaceService.initUserInterface();
-        this.add
-            .text(200, 24, '<- walk', {color: '#00ff00'})
-            .setOrigin(0, 0.5)
-            .setDepth(5);
+        this.userInterfaceService = new UserInterfaceService(
+            this,
+            ObjectDepth.USER_INTERFACE,
+        );
     }
 
     update(): void {

@@ -8,8 +8,8 @@ const config: Phaser.Types.Core.GameConfig = {
         mode: Phaser.Scale.WIDTH_CONTROLS_HEIGHT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
     },
-    width: window.innerWidth,
-    height: window.innerWidth / 2,
+    width: window.innerWidth * window.devicePixelRatio,
+    height: (window.innerWidth / 2) * window.devicePixelRatio,
     scene: [MainMenuScene],
     backgroundColor: '#B8C5EF',
 };

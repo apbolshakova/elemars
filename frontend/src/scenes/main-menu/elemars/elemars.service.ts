@@ -14,18 +14,13 @@ const ICE_COORDINATES = {
 const ICE_ANIMATION_DELAY = 1000;
 
 export class ElemarsService {
-    private elemars?: Phaser.GameObjects.Group;
-
-    constructor(private scene: MainMenuScene, private depth: number) {}
-
-    public initElemars(): void {
+    constructor(private scene: MainMenuScene, private depth: number) {
         this.initElemarsAnimations();
-        this.elemars = this.scene.add.group();
         this.createAndAddElemars();
     }
 
-    private createAndAddElemars() {
-        const fire: Phaser.GameObjects.Sprite = this.scene.make
+    private createAndAddElemars(): void {
+        this.scene.make
             .sprite({
                 x: FIRE_COORDINATES.x * this.scene.gameScale,
                 y: FIRE_COORDINATES.y * this.scene.gameScale,
@@ -36,7 +31,7 @@ export class ElemarsService {
             })
             .play(CharactersAssets.fire.frontStand.animationKey);
 
-        const ice: Phaser.GameObjects.Sprite = this.scene.make
+        this.scene.make
             .sprite({
                 x: ICE_COORDINATES.x * this.scene.gameScale,
                 y: ICE_COORDINATES.y * this.scene.gameScale,
@@ -47,11 +42,9 @@ export class ElemarsService {
                 add: true,
             })
             .play(CharactersAssets.ice.frontStand.animationKey);
-
-        this.elemars?.addMultiple([fire, ice]);
     }
 
-    private initElemarsAnimations() {
+    private initElemarsAnimations(): void {
         this.scene.anims.create({
             key: CharactersAssets.fire.frontStand.animationKey,
             frames: CharactersAssets.fire.frontStand.key,

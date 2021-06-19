@@ -2,7 +2,7 @@ import {MapAssets} from '../assets/map-assets/map-assets';
 import {CommonScene} from '../common.scene';
 
 export class CloudsService {
-    private clouds?: Phaser.GameObjects.Group;
+    private clouds: Phaser.GameObjects.Group;
     private controlX = this.scene.gameWidth;
     private isFirstScreen = true;
 
@@ -11,9 +11,7 @@ export class CloudsService {
         private depth: number,
         private cloudsPerScreen: number,
         private cloudsSpeed: number,
-    ) {}
-
-    public initClouds(): void {
+    ) {
         this.clouds = this.scene.add.group();
 
         for (let i = 0; i < this.cloudsPerScreen; i++) {
@@ -22,10 +20,6 @@ export class CloudsService {
     }
 
     public updateClouds(): void {
-        if (!this.clouds) {
-            return;
-        }
-
         const cloudElements = this.clouds.getChildren();
 
         if (this.isFirstScreen && this.controlX < 0) {
@@ -41,21 +35,17 @@ export class CloudsService {
             this.controlX = this.scene.gameWidth;
         }
 
-        Phaser.Actions.IncX(cloudElements, this.cloudsSpeed);
-        this.controlX += this.cloudsSpeed;
+        Phaser.Actions.IncX(cloudElements, this.cloudsSpeed * this.scene.gameScale);
+        this.controlX += this.cloudsSpeed * this.scene.gameScale;
     }
 
     public renewClouds(): void {
-        if (!this.clouds) {
-            return;
-        }
-
         this.clouds.getChildren().map((cloudElement: Phaser.GameObjects.GameObject) => {
             const cloudSprite: Phaser.GameObjects.Sprite =
                 cloudElement as Phaser.GameObjects.Sprite;
 
             if (cloudSprite.x + cloudSprite.width < 0) {
-                this.clouds?.remove(cloudSprite);
+                this.clouds.remove(cloudSprite);
                 this.createAndAddCloud();
             }
         });
@@ -75,6 +65,6 @@ export class CloudsService {
             add: true,
         });
 
-        this.clouds?.add(cloud);
+        this.clouds.add(cloud);
     }
 }

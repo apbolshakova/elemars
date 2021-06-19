@@ -13,17 +13,12 @@ const SMALL_PLATFORM_COORDINATES = {
 };
 
 export class PlatformsService {
-    private platforms?: Phaser.GameObjects.Group;
-
-    constructor(private scene: MainMenuScene, private depth: number) {}
-
-    public initPlatforms(): void {
-        this.platforms = this.scene.add.group();
+    constructor(private scene: MainMenuScene, private depth: number) {
         this.createAndAddPlatforms();
     }
 
-    private createAndAddPlatforms() {
-        const bigPlatform: Phaser.GameObjects.Image = this.scene.make.image({
+    private createAndAddPlatforms(): void {
+        this.scene.make.image({
             x: BIG_PLATFORM_COORDINATES.x * this.scene.gameScale,
             y: BIG_PLATFORM_COORDINATES.y * this.scene.gameScale,
             key: MapAssets.platform(PlatformType.BIG).key,
@@ -33,7 +28,7 @@ export class PlatformsService {
             add: true,
         });
 
-        const smallPlatform: Phaser.GameObjects.Image = this.scene.make.image({
+        this.scene.make.image({
             x: SMALL_PLATFORM_COORDINATES.x * this.scene.gameScale,
             y: SMALL_PLATFORM_COORDINATES.y * this.scene.gameScale,
             key: MapAssets.platform(PlatformType.SMALL).key,
@@ -42,7 +37,5 @@ export class PlatformsService {
             scale: this.scene.gameScale,
             add: true,
         });
-
-        this.platforms?.addMultiple([bigPlatform, smallPlatform]);
     }
 }
