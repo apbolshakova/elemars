@@ -15,7 +15,7 @@ export class CloudsService {
         this.clouds = this.scene.add.group();
 
         for (let i = 0; i < this.cloudsPerScreen; i++) {
-            this.createAndAddCloud();
+            this.initCloud();
         }
     }
 
@@ -25,7 +25,7 @@ export class CloudsService {
         if (this.isFirstScreen && this.controlX < 0) {
             // TODO здесь дублируется код с инициализацией - подумать, куда вынести и нужно ли
             for (let i = 0; i < this.cloudsPerScreen; i++) {
-                this.createAndAddCloud();
+                this.initCloud();
             }
             this.isFirstScreen = false;
         }
@@ -46,12 +46,12 @@ export class CloudsService {
 
             if (cloudSprite.x + cloudSprite.width < 0) {
                 this.clouds.remove(cloudSprite);
-                this.createAndAddCloud();
+                this.initCloud();
             }
         });
     }
 
-    private createAndAddCloud() {
+    private initCloud() {
         const point: Phaser.Geom.Point = this.scene.rightOutsideRect.getRandomPoint();
         const cloudType: number = Phaser.Math.Between(1, MapAssets.cloud().numOfTypes);
 

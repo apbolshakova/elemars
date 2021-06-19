@@ -16,10 +16,10 @@ const ICE_ANIMATION_DELAY = 1000;
 export class ElemarsService {
     constructor(private scene: MainMenuScene, private depth: number) {
         this.initElemarsAnimations();
-        this.createAndAddElemars();
+        this.initElemars();
     }
 
-    private createAndAddElemars(): void {
+    private initElemars(): void {
         this.scene.make
             .sprite({
                 x: FIRE_COORDINATES.x * this.scene.gameScale,

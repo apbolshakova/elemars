@@ -14,10 +14,10 @@ const SMALL_PLATFORM_COORDINATES = {
 
 export class PlatformsService {
     constructor(private scene: MainMenuScene, private depth: number) {
-        this.createAndAddPlatforms();
+        this.initPlatforms();
     }
 
-    private createAndAddPlatforms(): void {
+    private initPlatforms(): void {
         this.scene.make.image({
             x: BIG_PLATFORM_COORDINATES.x * this.scene.gameScale,
             y: BIG_PLATFORM_COORDINATES.y * this.scene.gameScale,

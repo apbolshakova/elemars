@@ -19,6 +19,8 @@ export class GamesListGateway {
         private playerService: PlayerService,
     ) {}
 
+    // TODO становится неудобно ориенитироваться по гейтвеям. Нужно изменить принцип - гейтвей для главного меню, для лобби и для игры (+ common)
+
     @SubscribeMessage('createGame')
     handleGameCreation(
         client: Socket,

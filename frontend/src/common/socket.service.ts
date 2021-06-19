@@ -1,4 +1,5 @@
 import * as io from '../plugins/socket.io';
+import {GamesListDto} from '../../../backend/src/games-list/dto/games-list.dto';
 
 export class SocketService {
     private socket: any;
@@ -10,8 +11,8 @@ export class SocketService {
 
     private init() {
         // TODO реализовать все по мере разработки + исходящие
-        this.socket.on('connectSuccess', this.onConnectSuccess.bind(this));
-        this.socket.on('connectFail', this.onConnectFail.bind(this));
+        this.socket.on('connectSuccess', SocketService.onConnectSuccess.bind(this));
+        this.socket.on('connectFail', SocketService.onConnectFail.bind(this));
         // this.socket.on('createGameSuccess', this.onCreateGameSuccess.bind(this));
         // this.socket.on('createGameFail', this.onCreateGameFail.bind(this));
         // this.socket.on('updateGamesList', this.onUpdateGamesList.bind(this));
@@ -22,12 +23,12 @@ export class SocketService {
         // this.socket.on('updateGame', this.onUpdateGame.bind(this));
     }
 
-    private onConnectSuccess(): void {
-        console.log('connect Success ' + this.socket.id);
+    private static onConnectSuccess(gamesListDto: GamesListDto): void {
+        console.log('connect Success ' + gamesListDto.games.length);
     }
 
-    private onConnectFail(): void {
-        console.log('connect Fail ' + this.socket.id);
+    private static onConnectFail(errorMessage: Error): void {
+        console.log('connect Fail ' + errorMessage);
     }
 
     // private onAllPlayers(players: string) {
